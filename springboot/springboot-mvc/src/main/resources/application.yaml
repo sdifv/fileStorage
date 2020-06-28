@@ -40,5 +40,5 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
-  type-aliases-package: com.yanhang.pojo
+  type-aliases-package: com.yhao.pojo
 

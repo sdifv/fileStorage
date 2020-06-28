@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>FileList</title>
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+</head>
+<body>
+
+<div class="layui-fluid">
+    <nav class="layui-nav">
+        <div class="layui-nav-item">
+            <p class="layui-nav-title" style="font-size: larger">
+                欢迎：<span th:if="${session.user!=null}" th:text="${session.user.username}"/>
+            </p>
+        </div>
+        <div class="layui-nav-item" style="float: right;">
+            <button class="layui-btn">
+                <a href="#" style="font-size: larger; padding: 0px; color: white">login out</a>
+            </button>
+        </div>
+        <div class="layui-nav-item" style="float: right; padding-right: 20px">
+            <button type="button" class="layui-btn" id="fileUpload">
+                <i class="layui-icon"></i>上传文件
+            </button>
+        </div>
+    </nav>
+</div>
+
+<table class="layui-table">
+    <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>文件名</th>
+        <th>文件后缀</th>
+        <th>存储路径</th>
+        <th>文件大小</th>
+        <th>类型</th>
+        <th>下载次数</th>
+        <th>上传时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="file,filestat:${files}">
+        <td><span th:text="${file.id}"/></td>
+        <td><span th:text="${file.fileName}"/></td>
+        <td><span th:text="${file.ext}"/></td>
+        <td><span th:text="${file.path}"/></td>
+        <td><span th:text="${file.size}"/></td>
+        <td><span th:text="${file.type}"/></td>
+        <td><span th:text="${file.downloadCounts}"/></td>
+        <td><span th:text="${#dates.format(file.uploadTime, 'yyyy-MM-dd HH-mm-ss')}"/></td>
+        <td>
+            <button type="button" class="layui-btn layui-btn-warm layui-btn-sm">
+                <a th:href="@{'/file/'+${file.id}}"><i class="layui-icon layui-icon-download-circle "></i></a>
+            </button>
+            <button type="button" class="layui-btn layui-btn-sm">
+                <a th:href="@{'/downloadFile/'+${file.id}}"><i class="layui-icon layui-icon-file-b"></i></a>
+            </button>
+            <button type="button" class="layui-btn layui-btn-danger layui-btn-sm">
+                <a th:href="@{'/deleteFile/'+${file.id}}"><i class="layui-icon layui-icon-delete"></i></a>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<script th:src="@{/layui.js}" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use('upload', function () {
+        var $ = layui.jquery
+            , upload = layui.upload;
+
+        //普通图片上传
+        //指定允许上传的文件类型
+        upload.render({
+            elem: '#fileUpload'
+            , url: 'https://httpbin.org/post' //改成您自己的上传接口
+            , accept: 'file' //普通文件
+            , done: function (res) {
+                layer.msg('上传成功');
+                console.log(res);
+            }
+        })
+    })
+
+</script>
+
+</body>
+</html>

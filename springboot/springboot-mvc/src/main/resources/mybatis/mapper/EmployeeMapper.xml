@@ -36,7 +36,7 @@
         from employee e,department d
         where e.department_id = d.did
     </select>
-    <select id="queryEmployeeById" resultMap="EmployeeMap">
+    <select id="queryEmployeeById" resultMap="EmployeeMap" parameterType="int">
         select e.id,last_name,email,gender,birth,d.did,d.name
         from employee e,department d
         where e.id=#{id} and e.department_id = d.did
