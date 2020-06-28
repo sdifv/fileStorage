@@ -1,0 +1,32 @@
+create table department
+(
+    did  int(16)      not null
+        primary key,
+    name varchar(255) null
+);
+
+create table employee
+(
+    id            int auto_increment
+        primary key,
+    last_name     varchar(255) null,
+    gender        int(8)       null,
+    email         varchar(255) null,
+    birth         date         null,
+    department_id int(8)       null,
+    constraint department_id
+        foreign key (department_id) references department (did)
+            on delete cascade
+);
+
+create definer = root@localhost view employeeinfo as
+select `mybatis`.`employee`.`id`        AS `id`,
+       `mybatis`.`employee`.`last_name` AS `last_name`,
+       `mybatis`.`employee`.`gender`    AS `gender`,
+       `mybatis`.`employee`.`email`     AS `email`,
+       `mybatis`.`employee`.`birth`     AS `birth`,
+       `mybatis`.`department`.`name`    AS `name`
+from `mybatis`.`employee`
+         join `mybatis`.`department`
+where (`mybatis`.`employee`.`department_id` = `mybatis`.`department`.`id`);
+

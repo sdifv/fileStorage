@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>index</title>
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+</head>
+<body>
+
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 80px;">
+        <div class="layui-col-lg4 layui-col-lg-offset4">
+            <h1 style="margin:20px; text-align: center"> 请 登 录 </h1>
+            <p style="color: red "></p>
+            <form class="layui-form" th:action="@{/user/login}", method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" name="username" required autocomplete="false">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密  码</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="password" name="password" required autocomplete="false">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/layui.js"></script>
+<script>
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer
+            ,form = layui.form;
+    });
+</script>
+</body>
+</html>
