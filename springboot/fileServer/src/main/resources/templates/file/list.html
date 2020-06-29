@@ -26,52 +26,51 @@
             </button>
         </div>
     </nav>
+
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <th style="width: 50px">id</th>
+            <th>文件名</th>
+            <th style="width: 100px">文件后缀</th>
+            <th>存储路径</th>
+            <th style="width: 100px">文件大小</th>
+            <th>类型</th>
+            <th style="width: 100px">下载次数</th>
+            <th style="width: 100px">上传时间</th>
+            <th style="width: 150px">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="file,filestat:${files}">
+            <td><span th:text="${file.id}"/></td>
+            <td><span th:text="${file.fileName}"/></td>
+            <td><span th:text="${file.ext}"/></td>
+            <td><span th:text="${file.path}"/></td>
+            <td><span th:text="${file.size}"/></td>
+            <td><span th:text="${file.type}"/></td>
+            <td><span th:text="${file.downloadCounts}"/></td>
+            <td><span th:text="${#dates.format(file.uploadTime, 'yyyy-MM-dd HH-mm-ss')}"/></td>
+            <td>
+                <button type="button" class="layui-btn layui-btn-warm layui-btn-sm">
+                    <a th:href="@{'/file/download/'+${file.id}}"><i class="layui-icon layui-icon-download-circle "></i></a>
+                </button>
+                <button type="button" class="layui-btn layui-btn-sm">
+                    <a th:href="@{'/file/preview/'+${file.id}}"><i class="layui-icon layui-icon-file-b"></i></a>
+                </button>
+                <button type="button" class="layui-btn layui-btn-danger layui-btn-sm">
+                    <a th:href="@{'/file/delete/'+${file.id}}"><i class="layui-icon layui-icon-delete"></i></a>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<table class="layui-table">
-    <colgroup>
-        <col width="150">
-        <col width="200">
-        <col>
-    </colgroup>
-    <thead>
-    <tr>
-        <th>id</th>
-        <th>文件名</th>
-        <th>文件后缀</th>
-        <th>存储路径</th>
-        <th>文件大小</th>
-        <th>类型</th>
-        <th>下载次数</th>
-        <th>上传时间</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="file,filestat:${files}">
-        <td><span th:text="${file.id}"/></td>
-        <td><span th:text="${file.fileName}"/></td>
-        <td><span th:text="${file.ext}"/></td>
-        <td><span th:text="${file.path}"/></td>
-        <td><span th:text="${file.size}"/></td>
-        <td><span th:text="${file.type}"/></td>
-        <td><span th:text="${file.downloadCounts}"/></td>
-        <td><span th:text="${#dates.format(file.uploadTime, 'yyyy-MM-dd HH-mm-ss')}"/></td>
-        <td>
-            <button type="button" class="layui-btn layui-btn-warm layui-btn-sm">
-                <a th:href="@{'/file/'+${file.id}}"><i class="layui-icon layui-icon-download-circle "></i></a>
-            </button>
-            <button type="button" class="layui-btn layui-btn-sm">
-                <a th:href="@{'/downloadFile/'+${file.id}}"><i class="layui-icon layui-icon-file-b"></i></a>
-            </button>
-            <button type="button" class="layui-btn layui-btn-danger layui-btn-sm">
-                <a th:href="@{'/deleteFile/'+${file.id}}"><i class="layui-icon layui-icon-delete"></i></a>
-            </button>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
 
 <script th:src="@{/layui.js}" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
@@ -84,11 +83,17 @@
         //指定允许上传的文件类型
         upload.render({
             elem: '#fileUpload'
-            , url: 'https://httpbin.org/post' //改成您自己的上传接口
+            , url: '/fileServer/file/upload' //改成您自己的上传接口
             , accept: 'file' //普通文件
             , done: function (res) {
-                layer.msg('上传成功');
-                console.log(res);
+                layer.msg(res.msg);
+                if (res.code==0){
+                    setTimeout(function () {
+                        window.location.href=res.url;
+                    },2000);
+                }else{
+                    alert("上传失败");
+                }
             }
         })
     })

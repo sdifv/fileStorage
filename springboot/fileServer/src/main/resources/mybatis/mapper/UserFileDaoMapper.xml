@@ -3,8 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yhao.fileserver.dao.UserFileDao">
+    <resultMap id="UserFileMap" type="UserFile">
+        <id column="id" property="id"></id>
+        <result column="file_name" property="fileName"></result>
+        <result column="download_counts" property="downloadCounts"></result>
+        <result column="upload_time" property="uploadTime"></result>
+        <result column="user_id" property="userId"></result>
+    </resultMap>
     <!--根据UserId查询当前用户的文件列表-->
-    <select id="queryByUserId" parameterType="Integer" resultType="UserFile">
-        select * from t_files where user_id=#{id}
+    <select id="queryByUserId" parameterType="Integer" resultMap="UserFileMap">
+        select * from t_files where user_id=#{id};
     </select>
+
+    <select id="queryByUserFileId" parameterType="Integer" resultMap="UserFileMap">
+        select * from t_files where id=#{id};
+    </select>
+
+    <insert id="save" parameterType="UserFile" useGeneratedKeys="true" keyProperty="id">
+        insert into t_files(file_name, ext, path, size, type, download_counts, upload_time, user_id)
+        VALUES (#{fileName},#{ext},#{path},#{size},#{type},#{downloadCounts},#{uploadTime},#{userId});
+    </insert>
+
+    <update id="update" parameterType="UserFile">
+        update t_files set download_counts=#{downloadCounts};
+    </update>
+
 </mapper>

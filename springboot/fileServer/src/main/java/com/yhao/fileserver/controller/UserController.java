@@ -26,7 +26,7 @@ public class UserController {
         if(userDB != null){
             session.setAttribute("user",userDB);
             System.out.println(userDB);
-            return "redirect:/file/allFile";
+            return "redirect:/file/all";
         }else{
             return "redirect:/index";
         }

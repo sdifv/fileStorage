@@ -12,4 +12,11 @@ import java.util.List;
 public interface UserFileDao {
     // 根据userId查询获取用户的文件列表
     List<UserFile> queryByUserId(Integer id);
+
+    // 保存文件到数据库
+    void save(UserFile userFile);
+
+    UserFile queryByUserFileId(Integer id);
+
+    void update(UserFile userFile);
 }
