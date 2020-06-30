@@ -14,18 +14,23 @@
     <select id="queryByUserId" parameterType="Integer" resultMap="UserFileMap">
         select * from t_files where user_id=#{id};
     </select>
-
+    <!--根据UserFileId查询文件信息-->
     <select id="queryByUserFileId" parameterType="Integer" resultMap="UserFileMap">
         select * from t_files where id=#{id};
     </select>
-
+    <!--保存新上传的文件-->
     <insert id="save" parameterType="UserFile" useGeneratedKeys="true" keyProperty="id">
         insert into t_files(file_name, ext, path, size, type, download_counts, upload_time, user_id)
         VALUES (#{fileName},#{ext},#{path},#{size},#{type},#{downloadCounts},#{uploadTime},#{userId});
     </insert>
-
+    <!--跟新文件的下载次数-->
     <update id="update" parameterType="UserFile">
         update t_files set download_counts=#{downloadCounts};
     </update>
+    <!--根据UserFileId删除文件-->
+    <delete id="delete" parameterType="Integer">
+        delete from t_files
+        where id=#{id};
+    </delete>
 
 </mapper>

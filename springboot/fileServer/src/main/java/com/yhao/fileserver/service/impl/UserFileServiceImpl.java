@@ -38,5 +38,10 @@ public class UserFileServiceImpl implements UserFileService {
         userFileDao.update(userFile);
     }
 
+    @Override
+    public void delete(Integer id) {
+        userFileDao.delete(id);
+    }
+
 
 }

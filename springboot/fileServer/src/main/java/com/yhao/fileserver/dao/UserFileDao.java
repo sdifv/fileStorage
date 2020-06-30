@@ -19,4 +19,6 @@ public interface UserFileDao {
     UserFile queryByUserFileId(Integer id);
 
     void update(UserFile userFile);
+
+    void delete(Integer id);
 }

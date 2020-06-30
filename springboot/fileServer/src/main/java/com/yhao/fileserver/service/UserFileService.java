@@ -12,4 +12,6 @@ public interface UserFileService {
     UserFile queryByUserFileId(Integer id);
 
     void update(UserFile userFile);
+
+    void delete(Integer id);
 }
