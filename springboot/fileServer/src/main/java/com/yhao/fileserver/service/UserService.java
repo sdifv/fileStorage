@@ -4,4 +4,6 @@ import com.yhao.fileserver.entity.User;
 
 public interface UserService {
     User login(User user);
+
+    void register(User user);
 }

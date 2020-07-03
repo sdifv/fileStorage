@@ -21,4 +21,11 @@ public class UserServiceImpl implements UserService {
         return userDao.login(user);
     }
 
+    @Override
+    public void register(User user) {
+        System.out.println(user);
+        userDao.register(user);
+    }
+
+
 }

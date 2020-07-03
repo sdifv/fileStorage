@@ -9,4 +9,9 @@
         from t_user
         where username=#{username} and password=#{password}
     </select>
+
+    <insert id="register" parameterType="User">
+        insert into t_user(username, password)
+        values(#{username}, #{password});
+    </insert>
 </mapper>

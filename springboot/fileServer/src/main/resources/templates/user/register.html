@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>注册</title>
+    <link rel="stylesheet" th:href="@{/css/layui.css}">
+
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row" style="margin-top: 80px;">
+        <div class="layui-col-lg4 layui-col-lg-offset4">
+            <h1 style="margin:20px; text-align: center"> 请 注 册 </h1>
+            <div class="layui-form-item">
+                <p style="color: red; text-align: center" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+            </div>
+            <form class="layui-form" th:action="@{/user/register}" method="post">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input  class="layui-input" type="text" name="username" required>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密  码</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="password" name="password" required autocomplete="false">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即注册</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+            <div style="float:right">
+                <a th:href="@{/user/toLogin}">去登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/layui.js"></script>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

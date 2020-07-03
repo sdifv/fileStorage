@@ -12,8 +12,10 @@
     <div class="layui-row" style="margin-top: 80px;">
         <div class="layui-col-lg4 layui-col-lg-offset4">
             <h1 style="margin:20px; text-align: center"> 请 登 录 </h1>
-            <p style="color: red "></p>
             <form class="layui-form" th:action="@{/user/login}", method="post">
+                <div class="layui-form-item">
+                    <p style="color: red; text-align: center" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户名</label>
                     <div class="layui-input-block">
@@ -28,11 +30,14 @@
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即登录</button>
                         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
                 </div>
             </form>
+            <div style="float:right">
+                <a th:href="@{/user/toRegister}">去注册</a>
+            </div>
         </div>
     </div>
 </div>
