@@ -1,8 +1,8 @@
-package com.yhao.fileserver.service.impl;
+package com.yhao.fileStorage.service.impl;
 
-import com.yhao.fileserver.dao.UserFileDao;
-import com.yhao.fileserver.entity.UserFile;
-import com.yhao.fileserver.service.UserFileService;
+import com.yhao.fileStorage.dao.UserFileDao;
+import com.yhao.fileStorage.entity.UserFile;
+import com.yhao.fileStorage.service.UserFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

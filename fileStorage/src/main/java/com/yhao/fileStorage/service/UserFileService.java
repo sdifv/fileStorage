@@ -1,6 +1,6 @@
-package com.yhao.fileserver.service;
+package com.yhao.fileStorage.service;
 
-import com.yhao.fileserver.entity.UserFile;
+import com.yhao.fileStorage.entity.UserFile;
 
 import java.util.List;
 

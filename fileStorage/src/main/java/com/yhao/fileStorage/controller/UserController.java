@@ -1,7 +1,7 @@
-package com.yhao.fileserver.controller;
+package com.yhao.fileStorage.controller;
 
-import com.yhao.fileserver.entity.User;
-import com.yhao.fileserver.service.UserService;
+import com.yhao.fileStorage.entity.User;
+import com.yhao.fileStorage.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;

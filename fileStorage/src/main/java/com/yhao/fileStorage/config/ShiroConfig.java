@@ -1,4 +1,4 @@
-package com.yhao.fileserver.config;
+package com.yhao.fileStorage.config;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;

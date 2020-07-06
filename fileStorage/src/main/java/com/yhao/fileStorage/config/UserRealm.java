@@ -1,13 +1,11 @@
-package com.yhao.fileserver.config;
+package com.yhao.fileStorage.config;
 
-import com.yhao.fileserver.entity.User;
-import com.yhao.fileserver.service.UserService;
-import org.apache.shiro.SecurityUtils;
+import com.yhao.fileStorage.entity.User;
+import com.yhao.fileStorage.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserRealm extends AuthorizingRealm {

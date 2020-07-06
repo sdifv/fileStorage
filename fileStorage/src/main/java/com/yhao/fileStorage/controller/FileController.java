@@ -1,17 +1,15 @@
-package com.yhao.fileserver.controller;
+package com.yhao.fileStorage.controller;
 
-import com.yhao.fileserver.entity.User;
-import com.yhao.fileserver.entity.UserFile;
-import com.yhao.fileserver.service.UserFileService;
+import com.yhao.fileStorage.entity.User;
+import com.yhao.fileStorage.entity.UserFile;
+import com.yhao.fileStorage.service.UserFileService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.nio.ch.IOUtil;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;

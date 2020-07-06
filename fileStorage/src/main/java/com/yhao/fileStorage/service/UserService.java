@@ -1,6 +1,6 @@
-package com.yhao.fileserver.service;
+package com.yhao.fileStorage.service;
 
-import com.yhao.fileserver.entity.User;
+import com.yhao.fileStorage.entity.User;
 
 public interface UserService {
     User login(User user);

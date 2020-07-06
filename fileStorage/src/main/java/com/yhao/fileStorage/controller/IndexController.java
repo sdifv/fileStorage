@@ -1,4 +1,4 @@
-package com.yhao.fileserver.controller;
+package com.yhao.fileStorage.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

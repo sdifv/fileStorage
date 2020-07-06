@@ -1,4 +1,4 @@
-package com.yhao.fileserver.entity;
+package com.yhao.fileStorage.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

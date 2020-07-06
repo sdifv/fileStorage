@@ -1,10 +1,9 @@
-package com.yhao.fileserver.dao;
+package com.yhao.fileStorage.dao;
 
-import com.yhao.fileserver.entity.UserFile;
+import com.yhao.fileStorage.entity.UserFile;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.ManagedBean;
 import java.util.List;
 
 @Mapper
