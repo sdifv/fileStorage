@@ -27,57 +27,23 @@
         </div>
     </nav>
 
-    <table class="layui-table">
-        <colgroup>
-            <col width="150">
-            <col width="200">
-            <col>
-        </colgroup>
-        <thead>
-        <tr>
-            <th style="width: 50px">id</th>
-            <th>文件名</th>
-            <th style="width: 100px">文件后缀</th>
-            <th>存储路径</th>
-            <th style="width: 100px">文件大小</th>
-            <th>类型</th>
-            <th style="width: 100px">下载次数</th>
-            <th style="width: 100px">上传时间</th>
-            <th style="width: 150px">操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="file,filestat:${files}">
-            <td><span th:text="${file.id}"/></td>
-            <td><span th:text="${file.fileName}"/></td>
-            <td><span th:text="${file.ext}"/></td>
-            <td><span th:text="${file.path}"/></td>
-            <td><span th:text="${file.size}"/></td>
-            <td><span th:text="${file.type}"/></td>
-            <td><span th:text="${file.downloadCounts}"/></td>
-            <td><span th:text="${#dates.format(file.uploadTime, 'yyyy-MM-dd HH-mm-ss')}"/></td>
-            <td>
-                <button type="button" class="layui-btn layui-btn-warm layui-btn-sm">
-                    <a th:href="@{'/file/download/'+${file.id}}"><i class="layui-icon layui-icon-download-circle "></i></a>
-                </button>
-                <button type="button" class="layui-btn layui-btn-sm">
-                    <a th:href="@{'/file/preview/'+${file.id}}"><i class="layui-icon layui-icon-file-b"></i></a>
-                </button>
-                <button type="button" class="layui-btn layui-btn-danger layui-btn-sm">
-                    <a th:href="@{'/file/delete/'+${file.id}}"><i class="layui-icon layui-icon-delete"></i></a>
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <table id="fileList" lay-filter="fileTable"></table>
+
+    <script type="text/html" id="optBar">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="download">下载</a>
+        <a class="layui-btn layui-btn-xs" lay-event="preview">预览</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+    </script>
+
 </div>
 
 <script th:src="@{/layui.js}" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-<script>
-    layui.use('upload', function () {
+<script th:inline="none">
+    layui.use(['upload', 'table'], function () {
         var $ = layui.jquery
-            , upload = layui.upload;
+            , upload = layui.upload
+            , table = layui.table;
 
         //普通图片上传
         //指定允许上传的文件类型
@@ -87,15 +53,83 @@
             , accept: 'file' //普通文件
             , done: function (res) {
                 layer.msg(res.msg);
-                if (res.code==0){
+                if (res.code == 0) {
                     setTimeout(function () {
-                        window.location.href=res.url;
-                    },2000);
-                }else{
+                        window.location.href = res.url;
+                    }, 2000);
+                } else {
                     alert("上传失败");
                 }
             }
-        })
+        });
+
+        //使用方法渲染表格
+        table.render({
+            elem: '#fileList',
+            height: 640,
+            minWidth: 80,
+            url: '/fileServer/file/all',
+            parseData: function (res) {
+                return {
+                    "code": 0,
+                    "msg": "",
+                    "count": res.length,
+                    "data": res
+                };
+            },
+            limit: 10,
+            page: true,
+            cols: [[
+                {field: 'id', title: 'ID', sort: true, fixed: 'left'},
+                {field: 'fileName', title: '文件名'},
+                {field: 'ext', title: '文件后缀'},
+                {field: 'path', title: '存储路径'},
+                {field: 'size', title: '大小'},
+                {field: 'type', title: '类型'},
+                {field: 'downloadCounts', title: '下载次数'},
+                {field: 'uploadTime', title: '上传时间'},
+                {title: '操作', align: 'center', toolbar: '#optBar', width: 200, fixed: 'right'}
+            ]]
+        });
+
+        //监听工具条
+
+        table.on('tool(fileTable)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'download') {
+                window.open("/fileServer/file/download/" + data.id);
+                obj.update({
+                    "downloadCounts": data.downloadCounts + 1
+                });
+            } else if (obj.event === 'delete') {
+                layer.confirm('真的删除文件吗？', function (index) {
+                    $.ajax({
+                        url: "/fileServer/file/delete/" + data.id,
+                        type: "Get",
+                        success: function (res) {
+                            layer.msg(res.msg);
+                            obj.del();
+                        },
+                        error: function (res) {
+                            $.message.alert('msg', res.msg);
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'preview') {
+                // window.open("/fileServer/file/preview/" + data.id);
+                layer.open({
+                    type: 2,
+                    skin: 'layui-layer-demo', //样式类名
+                    title: '文件预览',
+                    closeBtn: 1, //显示关闭按钮
+                    anim: 2,
+                    area: ['893px', '600px'],
+                    shadeClose: true, //开启遮罩关闭
+                    content: '/fileServer/file/preview/' + data.id
+                });
+            }
+        });
     })
 
 </script>

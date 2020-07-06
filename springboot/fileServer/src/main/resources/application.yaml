@@ -11,7 +11,7 @@ spring:
     password: 8636hyh
 
 server:
-  port: 8888
+  port: 8080
   servlet:
     context-path: /fileServer
 

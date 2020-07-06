@@ -24,20 +24,20 @@ public class UserController {
 
     // 前往登录
     @GetMapping("toRegister")
-    public String toRegister(){
+    public String toRegister() {
         return "user/register";
     }
 
     // 注册方法
     @PostMapping("register")
-    public String register(User user, Model model){
-        try{
+    public String register(User user, Model model) {
+        try {
             System.out.println(user);
             userService.register(user);
-            model.addAttribute("msg","注册成功，请登录");
+            model.addAttribute("msg", "注册成功，请登录");
             return "/user/register";
-        }catch (Exception e){
-            model.addAttribute("msg","注册失败");
+        } catch (Exception e) {
+            model.addAttribute("msg", "注册失败");
             return "/user/register";
         }
 
@@ -45,35 +45,36 @@ public class UserController {
 
     // 前往登录
     @GetMapping("toLogin")
-    public String toLogin(){
+    public String toLogin() {
         return "user/login";
     }
 
     // 登录方法
     @PostMapping("login")
-    public String login(User user, Model model){
+    public String login(User user, Model model) {
         //获取当前的用户
         Subject subject = SecurityUtils.getSubject();
         //封装用户的登录数据
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(),user.getPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
 
-        try{
+        try {
             subject.login(token);
             Session session = subject.getSession();
-            session.setAttribute("user",(User)subject.getPrincipal());
-            return "redirect:/file/all";
-        }catch (UnknownAccountException e){
-            model.addAttribute("msg","用户名或密码错误");
+            session.setAttribute("user", (User) subject.getPrincipal());
+            return "redirect:/file/index";
+//            return "file/list";
+        } catch (UnknownAccountException e) {
+            model.addAttribute("msg", "用户名或密码错误");
             return "user/login";
-        }catch (IncorrectCredentialsException e){
-            model.addAttribute("msg","用户名或密码错误");
+        } catch (IncorrectCredentialsException e) {
+            model.addAttribute("msg", "用户名或密码错误");
             return "user/login";
         }
     }
 
     //注销方法
     @GetMapping("logout")
-    public String logout(){
+    public String logout() {
         //获取当前的用户
         Subject subject = SecurityUtils.getSubject();
         subject.logout();

@@ -33,14 +33,17 @@ public class FileController {
     UserFileService userFileService;
 
     // 展示所有的文件
+    @GetMapping("/index")
+    public String fileIndex() {
+        return "file/list";
+    }
+
     @GetMapping("all")
-    public String queryAllFile(HttpSession session, Model model) {
+    @ResponseBody
+    public List<UserFile> queryAllFile(HttpSession session){
         User user = (User) session.getAttribute("user");
         List<UserFile> files = userFileService.queryByUserId(user.getId());
-//        System.out.println(files);
-        // 存入作用域中
-        model.addAttribute("files", files);
-        return "/file/list";
+        return files;
     }
 
     // 上传文件到数据库
@@ -85,12 +88,12 @@ public class FileController {
 
             res.put("code", "0");
             res.put("msg", "上传成功");
-            res.put("url", "/fileServer/file/all");
+            res.put("url", "/fileServer/file/index");
         } catch (IOException e) {
             e.printStackTrace();
             res.put("code", "-1");
             res.put("msg", "上传失败");
-            res.put("url", "/fileServer/file/all");
+            res.put("url", "/fileServer/file/index");
         }
 
         return res;
@@ -98,9 +101,14 @@ public class FileController {
 
     // 文件下载
     @GetMapping("download/{id}")
-    public void download(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
+    public void download(@PathVariable("id") Integer id, HttpServletResponse response){
         String openStyle = "attachment";
-        getFile(openStyle,id,response);
+        System.out.println("trigger download");
+        try{
+            getFile(openStyle,id,response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // 文件预览
@@ -133,14 +141,25 @@ public class FileController {
 
     // 文件删除
     @GetMapping("delete/{id}")
-    public String delete(@PathVariable("id")Integer id) throws FileNotFoundException {
-        UserFile fileInfo = userFileService.queryByUserFileId(id);
-        final String realPath = ResourceUtils.getURL("classpath").getPath() + fileInfo.getPath();
-        File file = new File(realPath);
-        if(file.exists()){
-            file.delete();  //立即删除
+    @ResponseBody
+    public Map<String,Object> delete(@PathVariable("id") Integer id) {
+        Map<String,Object> map = new HashMap<>();
+        try{
+            UserFile fileInfo = userFileService.queryByUserFileId(id);
+            final String realPath = ResourceUtils.getURL("classpath").getPath() + fileInfo.getPath();
+            File file = new File(realPath);
+            if(file.exists()){
+                file.delete();  //立即删除
+            }
+            userFileService.delete(id);
+            map.put("code",0);
+            map.put("msg","删除成功！");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            map.put("code",-1);
+            map.put("msg","删除成功！");
         }
-        userFileService.delete(id);
-        return "redirect:/file/all";
+        return map;
+//        return "redirect:/file/all";
     }
 }

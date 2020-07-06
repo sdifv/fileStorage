@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yhao.fileserver.dao.UserFileDao">
     <resultMap id="UserFileMap" type="UserFile">
+        <!--只需要映射列名与属性名不一致的-->
         <id column="id" property="id"></id>
         <result column="file_name" property="fileName"></result>
         <result column="download_counts" property="downloadCounts"></result>
@@ -25,7 +26,7 @@
     </insert>
     <!--跟新文件的下载次数-->
     <update id="update" parameterType="UserFile">
-        update t_files set download_counts=#{downloadCounts};
+        update t_files set download_counts=#{downloadCounts} where id=#{id};
     </update>
     <!--根据UserFileId删除文件-->
     <delete id="delete" parameterType="Integer">
