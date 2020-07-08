@@ -5,7 +5,7 @@ import com.yhao.fileStorage.entity.UserFile;
 import java.util.List;
 
 public interface UserFileService {
-    List<UserFile> queryByUserId(Integer id);
+    List<UserFile> queryByUserId(Integer id, Integer page, Integer limit);
 
     void save(UserFile userFile);
 
@@ -14,4 +14,6 @@ public interface UserFileService {
     void update(UserFile userFile);
 
     void delete(Integer id);
+
+    int queryFileCounts(Integer id);
 }

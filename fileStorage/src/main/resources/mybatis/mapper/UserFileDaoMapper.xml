@@ -13,7 +13,17 @@
     </resultMap>
     <!--根据UserId查询当前用户的文件列表-->
     <select id="queryByUserId" parameterType="Integer" resultMap="UserFileMap">
-        select * from t_files where user_id=#{id};
+        select *
+        from t_files
+        where user_id=#{id}
+        order by id
+        limit #{begin}, #{offset};
+    </select>
+    <!--查询用户的文件数目-->
+    <select id="queryFileCounts" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from t_files
+        where user_id=#{id};
     </select>
     <!--根据UserFileId查询文件信息-->
     <select id="queryByUserFileId" parameterType="Integer" resultMap="UserFileMap">

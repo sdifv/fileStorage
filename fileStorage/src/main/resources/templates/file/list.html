@@ -49,7 +49,7 @@
         //指定允许上传的文件类型
         upload.render({
             elem: '#fileUpload'
-            , url: '/fileServer/file/upload' //改成您自己的上传接口
+            , url: '/fileStorage/file/upload' //改成您自己的上传接口
             , accept: 'file' //普通文件
             , done: function (res) {
                 layer.msg(res.msg);
@@ -68,15 +68,16 @@
             elem: '#fileList',
             height: 640,
             minWidth: 80,
-            url: '/fileServer/file/all',
+            url: '/fileStorage/file/all',
             parseData: function (res) {
                 return {
-                    "code": 0,
+                    "code": res.code,
                     "msg": "",
-                    "count": res.length,
-                    "data": res
+                    "count": res.count,
+                    "data": res.data,
                 };
             },
+            method: 'post',
             limit: 10,
             page: true,
             cols: [[
@@ -93,18 +94,17 @@
         });
 
         //监听工具条
-
         table.on('tool(fileTable)', function (obj) {
             var data = obj.data;
             if (obj.event === 'download') {
-                window.open("/fileServer/file/download/" + data.id);
+                window.open("/fileStorage/file/download/" + data.id);
                 obj.update({
                     "downloadCounts": data.downloadCounts + 1
                 });
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除文件吗？', function (index) {
                     $.ajax({
-                        url: "/fileServer/file/delete/" + data.id,
+                        url: "/fileStorage/file/delete/" + data.id,
                         type: "Get",
                         success: function (res) {
                             layer.msg(res.msg);
@@ -117,7 +117,7 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'preview') {
-                // window.open("/fileServer/file/preview/" + data.id);
+                // window.open("/fileStorage/file/preview/" + data.id);
                 layer.open({
                     type: 2,
                     skin: 'layui-layer-demo', //样式类名
@@ -126,7 +126,7 @@
                     anim: 2,
                     area: ['893px', '600px'],
                     shadeClose: true, //开启遮罩关闭
-                    content: '/fileServer/file/preview/' + data.id
+                    content: '/fileStorage/file/preview/' + data.id
                 });
             }
         });

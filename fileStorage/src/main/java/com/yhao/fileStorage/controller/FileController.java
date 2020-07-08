@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -36,12 +37,26 @@ public class FileController {
         return "file/list";
     }
 
-    @GetMapping("all")
+    @PostMapping("all")
     @ResponseBody
-    public List<UserFile> queryAllFile(HttpSession session){
+    public Map<String, Object> queryAllFile(HttpSession session, HttpServletRequest request){
+        int page = Integer.parseInt(request.getParameter("page"));
+        int limit = Integer.parseInt(request.getParameter("limit"));
         User user = (User) session.getAttribute("user");
-        List<UserFile> files = userFileService.queryByUserId(user.getId());
-        return files;
+        List<UserFile> files = userFileService.queryByUserId(user.getId(),page,limit);
+
+        Map<String, Object> res = new HashMap<>();
+        res.put("code", 0);
+        res.put("count",userFileService.queryFileCounts(user.getId()));
+        res.put("data",files);
+        return res;
+    }
+
+    @GetMapping("number")
+    @ResponseBody
+    public int queryFileCounts(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        return userFileService.queryFileCounts(user.getId());
     }
 
     // 上传文件到数据库
@@ -86,12 +101,12 @@ public class FileController {
 
             res.put("code", "0");
             res.put("msg", "上传成功");
-            res.put("url", "/fileServer/file/index");
+            res.put("url", "/fileStorage/file/index");
         } catch (IOException e) {
             e.printStackTrace();
             res.put("code", "-1");
             res.put("msg", "上传失败");
-            res.put("url", "/fileServer/file/index");
+            res.put("url", "/fileStorage/file/index");
         }
 
         return res;

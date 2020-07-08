@@ -18,8 +18,10 @@ public class UserFileServiceImpl implements UserFileService {
     UserFileDao userFileDao;
 
     @Override
-    public List<UserFile> queryByUserId(Integer id) {
-        return userFileDao.queryByUserId(id);
+    public List<UserFile> queryByUserId(Integer id, Integer page, Integer limit) {
+        int begin = (page-1) * limit;
+        int offset = limit;
+        return userFileDao.queryByUserId(id, begin, offset);
     }
 
     @Override
@@ -41,6 +43,11 @@ public class UserFileServiceImpl implements UserFileService {
     @Override
     public void delete(Integer id) {
         userFileDao.delete(id);
+    }
+
+    @Override
+    public int queryFileCounts(Integer id) {
+        return userFileDao.queryFileCounts(id);
     }
 
 
