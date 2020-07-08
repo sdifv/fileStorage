@@ -18,9 +18,9 @@
 
 ## 界面展示
 - 主界面
-  ![fileIndex](doc/img/fileList.PNG)
+  ![fileIndex](https://github.com/sdifv/fileStorage/blob/master/doc/img/fileList.PNG)
 - 预览界面
-  ![preview](doc/img/preview.PNG)
+  ![preview](https://github.com/sdifv/fileStorage/blob/master/doc/img/preview.PNG)
 
 ## 项目启动
 1. 克隆项目
